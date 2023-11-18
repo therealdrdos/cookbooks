@@ -38,4 +38,8 @@ If you experience errors with unreachable websites, get a go tarball and install
 9. Build the Linux Kernel for the u-boot Payload
 - Download the kernel-tarball from kernel.org and extract it with tar -xvf
 - Copy the provided file "linuxboot-defconfig" to yourkernelfolder/arch/arm64/configs/
-- Change the Line "CONFIG_INITRAMFS_SOURCE" to match your u-root/initramfs.cpio File
+- Change the Line "CONFIG_INITRAMFS_SOURCE" to match your u-root/initramfs.cpio File-Destination
+- Build your .config File with:
+$ ARCH=arm64 make linuxboot_defconfig
+- Copy the Linux-Kernel build.sh provided to you to your Kernel's Destination and run it
+For every question, just press Enter, until it starts building the Kernel
