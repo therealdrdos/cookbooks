@@ -21,4 +21,21 @@ $ make
 Now you have built Coreboot from Scratch, but without a payload included. This is just a step to check if anything is okay
 
 7. Create a RUN-Script for QEMU to try the coreboot
+Requirements: TFA.fd (Firmware-Blob) in a blob/ subfolder
+- Run the script run.sh provided with this document
+Output in the last Line should be "[EMERG] Payload not loaded."
+Exit with CTRL+A, X
 
+8. Build your initramfs.cpio File with u-root
+8.1 Build u-root
+$ git clone https://github.com/u-root/u-root
+$ cd u-root
+$ go build
+8.2 Build the initramfs
+- Copy the build.sh provided for u-root and run it
+If you experience errors with unreachable websites, get a go tarball and install it in your home directory, and use this bin, not the system-wide-installed version
+
+9. Build the Linux Kernel for the u-boot Payload
+- Download the kernel-tarball from kernel.org and extract it with tar -xvf
+- Copy the provided file "linuxboot-defconfig" to yourkernelfolder/arch/arm64/configs/
+- Change the Line "CONFIG_INITRAMFS_SOURCE" to match your u-root/initramfs.cpio File
