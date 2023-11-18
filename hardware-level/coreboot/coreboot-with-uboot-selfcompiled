@@ -1,0 +1,24 @@
+# Cookbook for building Coreboot from Scratch for a Qemu-aarch64-Environment
+# For current commands and packages see https://doc.coreboot.org/tutorial/part1.html
+
+1. Clone the coreboot repo
+$ git clone https://review.coreboot.org/coreboot
+2. Download Patch for Qemu-sbsa
+$ git fetch https://review.coreboot.org/coreboot refs/changes/86/79086/3 && git checkout -b change-79086 FETCH_HEAD
+3. Build the toolchain for aarch64
+$ make crossgcc-aarch64 CPUS=$(nproc)
+4. Generate the config
+$ make menuconfig
+	- select Mainboard->Mainboard Model->"QEMU sbsa"
+	- safe config to .config
+5. (Optionally) Test config
+$ make savedefconfig
+$ cat defconfig
+	- check output, if changes match
+6. Build coreboot (as a test without a payload)
+$ make
+
+Now you have built Coreboot from Scratch, but without a payload included. This is just a step to check if anything is okay
+
+7. Create a RUN-Script for QEMU to try the coreboot
+
