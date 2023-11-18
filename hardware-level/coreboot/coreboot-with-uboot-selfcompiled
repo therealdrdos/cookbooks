@@ -57,5 +57,31 @@ $ make defconfig -j
 $ cd ../..
 $ make -j # build coreboot with payload
 
+To test if everything is correct, run the run.sh script again, it should get you a u-root-shell
+Exit with CTRL+A X
 
+Boot from a .raw aarch64 disk-image
+1. Get yourself a .raw disk-image (e.g. fedora/debian/...)
+2. Uncomment the -drive Line in your run.sh file, and change the path to match your image
+!The only tested image with this procedure is Fedora 36 Server Edition, others will work different!
+3. Run run.sh and wait till you get the u-boot-shell
+4. Check if the Image is there with:
+$ ls /dev | grep sda
+Output should be sda1,sda2,sda3
+5. Mount Image
+$ mkdir /mnt
+$ mkdir /mnt/mount1
+$ mount /dev/sda2 /mnt/mount1
+$ cd /mnt/mount1
+6. Copy boot parameters
+$ cat loader/entries/yourfile.aarch64.conf
+Copy the parameters after options (e.g. "root=/dev/mapper/fedora_fedora-root ro rd.lvm.lv=fedora_fedora/root rhgb quiet"
 
+Tipp: Read 8. before 7. :)
+
+7. Execute the Image
+$ kexec -d -l vmlinuz-... -i initramfs-... -c "yourcopiedoptions"
+$ kexec -e # Start the OS
+After this it should boot into the os without any problems, but it should take plenty of time (~3min maybe)
+(8.)
+Untested, but nice to know: If you run an iso Image instead of a raw one, you can skip Step 7 and just type "boot" in the u-boot shell
