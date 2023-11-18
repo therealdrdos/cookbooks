@@ -43,3 +43,19 @@ If you experience errors with unreachable websites, get a go tarball and install
 $ ARCH=arm64 make linuxboot_defconfig
 - Copy the Linux-Kernel build.sh provided to you to your Kernel's Destination and run it
 For every question, just press Enter, until it starts building the Kernel
+
+10. Build coreboot (again, but with payload this time)
+- Apply another Patch to Coreboot, to add the uefistub we need:
+$ git fetch https://review.coreboot.org/coreboot refs/changes/13/78913/4 && git cherry-pick FETCH_HEAD
+- Copy the Linux-Kernel-Image located in yourkernelfolder/arch/arm64/boot/Image to yourcorebootfolder/payloads/uefistub/Image
+- In the Coreboot Root-directory:
+$ make menuconfig
+	- Payloads->Uncheck "Don't add a payload"->Payload path and filename->payloads/uefistub/build/uefistub.elf
+- copy payloads/uefistub/configs/defcontig-qemu-sbsa to payloads/uefistub/configs/defconfig
+$ cd payloads/uefistub
+$ make defconfig -j
+$ cd ../..
+$ make -j # build coreboot with payload
+
+
+
